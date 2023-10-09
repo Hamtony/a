@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -67,5 +68,12 @@ public class PlayerController : MonoBehaviour
             state = movemntStatemnt.idle;
         }
         animator.SetInteger("state", (int)state);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "NextLevel")
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 }
