@@ -39,9 +39,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: background
+    uniqueID: 2336776197
+    locked: 0
+  - name: walls
+    uniqueID: 619827059
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Door
     uniqueID: 2973284809
+    locked: 0
+  - name: projectile
+    uniqueID: 3615283945
     locked: 0

@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float dirX = 0;
     private float dirY = 0;
     private enum movemntStatemnt {idle, left, rigth, up, down}
+    public SpriteRenderer spriteRend;
 
     // Start is called before the first frame update
     void Start()
@@ -18,56 +20,39 @@ public class PlayerController : MonoBehaviour
         rb2D = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        dirX = Input.GetAxisRaw("Horizontal");
-        dirY = Input.GetAxisRaw("Vertical");
-        rb2D.velocity = new Vector2(dirX*speed,rb2D.velocity.y);
-        if (Input.GetKey("right") && Input.GetKey("left"))
-        {
-            rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-        }
-        if (!Input.GetKey("right") && !Input.GetKey("left"))
-        {
-            rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-        }
-        if (Input.GetKey("up"))
-        {
-            rb2D.velocity = new Vector2( rb2D.velocity.x, speed);
-        }
-        if (Input.GetKey("down"))
-        {
-            rb2D.velocity = new Vector2( rb2D.velocity.x, -speed);
-        }
-        if (Input.GetKey("up") && Input.GetKey("down"))
-        {
-            rb2D.velocity = new Vector2(rb2D.velocity.x,0);
-        }
-        if (!Input.GetKey("down") && !Input.GetKey("up"))
-        {
-            rb2D.velocity = new Vector2(rb2D.velocity.x,0);
-        }
-        UpdateAnim();
-    }
-    void UpdateAnim(){
+    void updateAnim(){
         movemntStatemnt state;
         if(dirX > 0f){
             state = movemntStatemnt.rigth;
+            spriteRend.flipX = false;
         }
         else if(dirX < 0f){
             state = movemntStatemnt.left;
+            spriteRend.flipX = true;
         }
         else if(dirY < 0f){
+            spriteRend.flipX = false;
             state = movemntStatemnt.down;
         }
         else if(dirY > 0f){
+            spriteRend.flipX = false;
             state = movemntStatemnt.up;
         }
         else{
+            spriteRend.flipX = false;
             state = movemntStatemnt.idle;
         }
         animator.SetInteger("state", (int)state);
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        dirX = Input.GetAxis("Horizontal");
+        dirY = Input.GetAxis("Vertical");
+        Vector2 movimiento = new Vector2(dirX, dirY) * speed;
+        rb2D.velocity = movimiento;
+        updateAnim();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
