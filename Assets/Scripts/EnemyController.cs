@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using UnityEngine.UIElements;
+using UnityEditorInternal;
 
 public class EnemyController : MonoBehaviour
 {
@@ -15,23 +16,28 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private enum movementState {idle, left, right, up, down}
     public float vida = 10;
+    private Rigidbody2D rigidbody2D;
     void Start()
     {
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Isaac");
+        rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         if(vida <= 0){
-            Destroy(gameObject);
+            animator.SetBool("dying", true);
+            rigidbody2D.simulated = false;
         }
-        distance= Vector2.Distance(transform.position, player.transform.position);
-        direction = player.transform.position - transform.position;
-        direction.Normalize();
-        transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
-        UpdateAnimation();
+        else{
+            distance= Vector2.Distance(transform.position, player.transform.position);
+            direction = player.transform.position - transform.position;
+            direction.Normalize();
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            UpdateAnimation();
+        }
     }
 
     void UpdateAnimation()
@@ -58,7 +64,11 @@ public class EnemyController : MonoBehaviour
         if(other.tag == "Projectile")
         {
             vida--;
-            UnityEngine.Debug.Log(vida);
         }
+    }
+
+    void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 }
