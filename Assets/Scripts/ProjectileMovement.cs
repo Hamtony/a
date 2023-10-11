@@ -18,7 +18,6 @@ public class ProjectileMovement : MonoBehaviour
        
     }
     public void defineDirection(int stat, float ran){
-        UnityEngine.Debug.Log(stat);
         range = ran;
         if(stat == 0){
             rb.velocity = transform.right * -tear_speed;
@@ -41,5 +40,12 @@ public class ProjectileMovement : MonoBehaviour
             Destroy(gameObject);
         }
         time++;
+        
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Target")
+        {
+            Destroy(gameObject);
+        }
     }
 }
