@@ -9,19 +9,24 @@ using UnityEngine.UIElements;
 public class EnemyController : MonoBehaviour
 {
     public float speed;
-    public GameObject player;
+    private GameObject player;
     private float distance;
     private Vector2 direction;
     private Animator animator;
     private enum movementState {idle, left, right, up, down}
+    public float vida = 10;
     void Start()
     {
         animator = GetComponent<Animator>();
+        player = GameObject.FindWithTag("Isaac");
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if(vida <= 0){
+            Destroy(gameObject);
+        }
         distance= Vector2.Distance(transform.position, player.transform.position);
         direction = player.transform.position - transform.position;
         direction.Normalize();
@@ -48,5 +53,12 @@ public class EnemyController : MonoBehaviour
             state = movementState.idle;
         }
         animator.SetInteger("state", (int)state);
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Projectile")
+        {
+            vida--;
+            UnityEngine.Debug.Log(vida);
+        }
     }
 }

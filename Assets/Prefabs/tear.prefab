@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8583851789669393338}
   m_Layer: 0
   m_Name: tear
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,6 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tear_speed: 10
+  time: 0
   range: 60
   rb: {fileID: 1361291498398106889}
-  selfProyectile: {fileID: 7381691884003316560}
