@@ -18,12 +18,13 @@ public class EnemyController : MonoBehaviour
     private enum movementState { idle, left, right, up, down }
     public float vida = 10;
     private Rigidbody2D rigidbody2D;
-    public AIPath aIPath;
+    private AIPath aIPath;
     void Start()
     {
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Isaac");
         rigidbody2D = GetComponent<Rigidbody2D>();
+        aIPath = GetComponent<AIPath>();
     }
 
     // Update is called once per frame
