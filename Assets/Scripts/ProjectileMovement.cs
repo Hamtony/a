@@ -17,7 +17,7 @@ public class ProjectileMovement : MonoBehaviour
     {
        
     }
-    public void defineDirection(int stat, float ran){
+    public void defineDirection(int stat, float ran, Vector2 velocityPlayer){
         range = ran;
         if(stat == 0){
             rb.velocity = transform.right * -tear_speed;
@@ -31,6 +31,7 @@ public class ProjectileMovement : MonoBehaviour
         if(stat == 3){
             rb.velocity = transform.up * -tear_speed;
         }
+        rb.velocity = rb.velocity + (velocityPlayer/2);
     }
 
     // Update is called once per frame

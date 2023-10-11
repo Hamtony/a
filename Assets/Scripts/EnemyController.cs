@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UIElements;
 using UnityEditorInternal;
+using Pathfinding;
 
 public class EnemyController : MonoBehaviour
 {
@@ -14,9 +15,10 @@ public class EnemyController : MonoBehaviour
     private float distance;
     private Vector2 direction;
     private Animator animator;
-    private enum movementState {idle, left, right, up, down}
+    private enum movementState { idle, left, right, up, down }
     public float vida = 10;
     private Rigidbody2D rigidbody2D;
+    public AIPath aIPath;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -27,22 +29,25 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(vida <= 0){
+        if (vida <= 0)
+        {
             animator.SetBool("dying", true);
             rigidbody2D.simulated = false;
         }
-        else{
+        /*else{
             distance= Vector2.Distance(transform.position, player.transform.position);
             direction = player.transform.position - transform.position;
             direction.Normalize();
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-            UpdateAnimation();
-        }
+            
+        }*/
+        UpdateAnimation();
     }
 
     void UpdateAnimation()
     {
         movementState state;
+        /*movementState state;
         if(direction.x > 0f){
             state = movementState.right;
         }
@@ -58,10 +63,33 @@ public class EnemyController : MonoBehaviour
         else{
             state = movementState.idle;
         }
+        animator.SetInteger("state", (int)state);*/
+        Debug.Log(aIPath);
+        if (aIPath.desiredVelocity.x >= 0.01f)
+        {
+            state = movementState.right;
+        }
+        else if (aIPath.desiredVelocity.x <= -0.01f)
+        {
+            state = movementState.left;
+        }
+        else if (aIPath.desiredVelocity.y <= 0.01f)
+        {
+            state = movementState.up;
+        }
+        else if (aIPath.desiredVelocity.y >= -0.01f)
+        {
+            state = movementState.down;
+        }
+        else
+            {
+                state = movementState.idle;
+            }
         animator.SetInteger("state", (int)state);
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.tag == "Projectile")
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Projectile")
         {
             vida--;
         }
