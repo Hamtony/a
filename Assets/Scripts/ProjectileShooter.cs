@@ -6,15 +6,15 @@ public class Projectile : MonoBehaviour
 {
     public Transform weapon;
     public GameObject projectilePrefab;
-    public float tear_delay = 8;
-    private List<GameObject> tears;
-    private List<ProjectileMovement> tears_scripts;
+    public float tear_delay = 24f;
+    public float range = 10f;
     private float delay = 0.0f;
     private float dirX = 0;
     private float dirY = 0;
     private enum movemntStatemnt {left, rigth, up, down}
     public SpriteRenderer spriteRend;
     public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,52 +24,36 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        updateAnim();
         if(delay <= 0)
             shoot();
         else
             delay--;
     }
     void shoot(){
-        if(Input.GetKey("right")){
-            tears.Add(Instantiate(projectilePrefab, weapon.position, weapon.rotation));
+        movemntStatemnt state=0;
+        if(Input.GetKey("left")){
+            GameObject obj = Instantiate(projectilePrefab, weapon.position, weapon.rotation);
+            state = movemntStatemnt.left;
+            obj.GetComponent<ProjectileMovement>().defineDirection((int)state, range);
             delay=tear_delay;
         }
-        else if(Input.GetKey("down")){
-            tears.Add(Instantiate(projectilePrefab, weapon.position, weapon.rotation));
+        else if(Input.GetKey("right")){
+            GameObject obj = Instantiate(projectilePrefab, weapon.position, weapon.rotation);
+            state = movemntStatemnt.rigth;
+            obj.GetComponent<ProjectileMovement>().defineDirection((int)state, range);
             delay=tear_delay;
         }
         else if(Input.GetKey("up")){
-            tears.Add(Instantiate(projectilePrefab, weapon.position, weapon.rotation));
-            delay=tear_delay;
-        }
-        else if(Input.GetKey("left")){
-            tears.Add(Instantiate(projectilePrefab, weapon.position, weapon.rotation));
-            delay=tear_delay;
-        }
-    }
-    void updateAnim(){
-        movemntStatemnt state;
-        if(dirX > 0f){
-            state = movemntStatemnt.rigth;
-            spriteRend.flipX = false;
-        }
-        else if(dirX < 0f){
-            state = movemntStatemnt.left;
-            spriteRend.flipX = true;
-        }
-        else if(dirY < 0f){
-            spriteRend.flipX = false;
-            state = movemntStatemnt.down;
-        }
-        else if(dirY > 0f){
-            spriteRend.flipX = false;
+            GameObject obj = Instantiate(projectilePrefab, weapon.position, weapon.rotation);
             state = movemntStatemnt.up;
+            obj.GetComponent<ProjectileMovement>().defineDirection((int)state, range);
+            delay=tear_delay;
         }
-        else{
-            spriteRend.flipX = false;
+        else if(Input.GetKey("down")){
+            GameObject obj = Instantiate(projectilePrefab, weapon.position, weapon.rotation);
             state = movemntStatemnt.down;
+            obj.GetComponent<ProjectileMovement>().defineDirection((int)state, range);
+            delay=tear_delay;
         }
-        animator.SetInteger("state", (int)state);
     }
 }
