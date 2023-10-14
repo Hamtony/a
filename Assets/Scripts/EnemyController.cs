@@ -7,6 +7,7 @@ using System;
 using UnityEngine.UIElements;
 using UnityEditorInternal;
 using Pathfinding;
+using TMPro;
 
 public class EnemyController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour
     public float vida = 10;
     private Rigidbody2D rigidbody2D;
     private AIPath aIPath;
+    public HealthText healthText;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -92,6 +94,13 @@ public class EnemyController : MonoBehaviour
     {
         if (other.tag == "Projectile")
         {
+            RectTransform textTransform = Instantiate(healthText).GetComponent<RectTransform>();
+            textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+
+            Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+
+            textTransform.SetParent(canvas.transform);
+
             vida--;
         }
     }

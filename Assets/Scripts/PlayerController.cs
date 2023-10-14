@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private enum movemntStatemnt {idle, left, rigth, up, down}
     public SpriteRenderer spriteRend;
     public Projectile head;
+    private int lives = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -61,5 +62,10 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+
+        if(other.tag == "Target"){
+            lives--;
+        }
+
     }
 }

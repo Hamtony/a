@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - Target
   - Isaac
+  - Canvas
   layers:
   - Default
   - TransparentFX
